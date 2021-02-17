@@ -1,3 +1,4 @@
+const { UnprocessableEntity } = require('http-errors');
 const Joi = require('joi');
 
 /**
@@ -122,7 +123,7 @@ class Project {
       error,
     } = schema.validate(data);
     if (error) {
-      throw new Error(error);
+      throw new UnprocessableEntity(error);
     }
     return validData;
   }

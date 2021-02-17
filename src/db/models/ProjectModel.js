@@ -1,5 +1,6 @@
 const {DBInterface} = require('../../interfaces/DBInterface');
 const {Project} = require('../../entities/Project');
+const {NotFound, InternalServerError} = require('http-errors');
 
 const MAX_ELEMENTS = 10;
 
@@ -66,10 +67,11 @@ class ProjectModel extends DBInterface {
    * @return {Project} result
    */
   async find(id) {
-    const projectData = await this.modelInstance
+    const project = await this.modelInstance
         .findOne({'_id': id})
         .lean();
-    return new Project(projectData);
+    if (!project) throw new NotFound(`Project with id ${id} was not found`);
+    return new Project(project);
   }
 
   /**
@@ -100,7 +102,7 @@ class ProjectModel extends DBInterface {
       this.modelInstance
           .create({...projectObject.toJson()}, (err, project) => {
             if (err) {
-              return reject(new Error(err));
+              return reject(new InternalServerError(err));
             }
             resolve(project);
           });
@@ -126,11 +128,14 @@ class ProjectModel extends DBInterface {
               },
               (err, project) => {
                 if (err) {
-                  return reject(new Error(err));
+                  return reject(new InternalServerError(err));
                 }
                 return resolve(project);
               });
     });
+    if (!project) {
+      throw new NotFound(`Project with id ${id} was not found`);
+    }
     return new Project(project);
   }
 
@@ -142,7 +147,8 @@ class ProjectModel extends DBInterface {
   async delete(id) {
     const deletedProject = await this.update(id, {'active': false});
     if (!deletedProject.active) return true;
-    throw new Error(`Project not updated. Data: ${deletedProject}`);
+    throw new InternalServerError(
+        `Project not updated. Data: ${deletedProject}`);
   }
 }
 
