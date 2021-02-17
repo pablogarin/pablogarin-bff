@@ -1,17 +1,17 @@
 /**
  * @abstract
  *
- * @class DBInterface
+ * @class IModel
  */
-class DBInterface {
+class IModel {
   /**
    * Abstract class constructor
    * @constructor
    */
   constructor() {
-    if (this.constructor === DBInterface) {
+    if (this.constructor === IModel) {
       throw new TypeError(
-          'Abstract class "DBInterface" cannot be instantiated directly',
+          'Abstract class "IModel" cannot be instantiated directly',
       );
     }
     if (this.find === undefined) {
@@ -42,4 +42,4 @@ class DBInterface {
   }
 }
 
-module.exports = {DBInterface};
+module.exports = {IModel};

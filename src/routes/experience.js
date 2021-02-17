@@ -6,10 +6,10 @@ const {getStatusCodeFromError} = require('./routesHelper');
 const {APIController} = require('../controllers/APIController');
 
 router.use((req, res, next) => {
-  console.log('Making a request to the projects resource');
+  console.log('Making a request to the Experiences resource');
   const app = req.app;
   req.controller = new APIController(
-      app.diContainer.get('project', 'database'),
+      app.diContainer.get('experience', 'database'),
   );
   next();
 });
@@ -25,13 +25,13 @@ router.get('/', async (req, res) => {
     if (isNaN(page) || (limit && isNaN(limit))) {
       throw new BadRequest('invalid parameters');
     }
-    const projectList = await controller.getAll(
+    const experienceList = await controller.getAll(
         parseInt(page, 10),
         parseInt(limit, 10),
     );
     res.send({
       'success': true,
-      'projects': projectList,
+      'experiences': experienceList,
     });
   } catch (e) {
     res.statusCode = getStatusCodeFromError(e);
@@ -39,13 +39,13 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.get('/:projectId', async (req, res) => {
+router.get('/:experienceId', async (req, res) => {
   try {
-    const {params: {projectId: id}} = req;
+    const {params: {experienceId: id}} = req;
     const controller = req.controller;
-    const project = await controller.getById(id);
+    const experience = await controller.getById(id);
     res.statusCode = 200;
-    res.send(project);
+    res.send(experience);
   } catch (e) {
     res.statusCode = getStatusCodeFromError(e);
     res.send({'message': e.message});
@@ -56,18 +56,18 @@ router.post('/', async (req, res) => {
   try {
     const {body: data} = req;
     const controller = req.controller;
-    const project = await controller.createResource(data);
+    const experience = await controller.createResource(data);
     res.statusCode = 201;
-    res.send(project);
+    res.send(experience);
   } catch (e) {
     res.statusCode = getStatusCodeFromError(e);
     res.send({'message': e.message});
   }
 });
 
-router.put('/:projectId', async (req, res) => {
+router.put('/:experienceId', async (req, res) => {
   try {
-    const {params: {projectId: id}, body: data} = req;
+    const {params: {experienceId: id}, body: data} = req;
     const controller = req.controller;
     const update = await controller.updateResource(id, data);
     res.send(update);
@@ -77,9 +77,9 @@ router.put('/:projectId', async (req, res) => {
   }
 });
 
-router.delete('/:projectId', async (req, res, next) => {
+router.delete('/:experienceId', async (req, res, next) => {
   try {
-    const {params: {projectId: id}} = req;
+    const {params: {experienceId: id}} = req;
     const controller = req.controller;
     const deleted = await controller.disableResource(id);
     if (deleted) {

@@ -1,4 +1,4 @@
-const { UnprocessableEntity } = require('http-errors');
+const {UnprocessableEntity} = require('http-errors');
 const Joi = require('joi');
 
 /**

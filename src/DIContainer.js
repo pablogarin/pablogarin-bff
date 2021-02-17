@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const {ProjectModel} = require('./db/models/ProjectModel');
+const {ExperienceModel} = require('./db/models/ExperienceModel');
 
 /**
  * @class DIContainer
@@ -20,6 +21,7 @@ class DIContainer {
     this.dependencies = {
       'database': {
         'project': () => (new ProjectModel(this.connection)),
+        'experience': () => (new ExperienceModel(this.connection)),
       },
     };
   }
@@ -45,6 +47,7 @@ class DIContainer {
         // Check if this dependency has been initialized
         const key = `${dependencySection}.${dependencyName}`;
         if (key in this.instances) {
+          // Return cached instance
           return this.instances[key];
         }
         const instance = section[dependencyName]();

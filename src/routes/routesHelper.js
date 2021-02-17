@@ -1,4 +1,10 @@
-const { BadRequest, NotFound, Forbidden, UnprocessableEntity } = require("http-errors")
+const {
+  BadRequest,
+  NotFound,
+  Forbidden,
+  UnprocessableEntity,
+  InternalServerError,
+} = require('http-errors');
 
 const getStatusCodeFromError = (e) => {
   let statusCode;
@@ -21,6 +27,6 @@ const getStatusCodeFromError = (e) => {
       break;
   }
   return statusCode;
-}
+};
 
-module.exports = {getStatusCodeFromError}
+module.exports = {getStatusCodeFromError};

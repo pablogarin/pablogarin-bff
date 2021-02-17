@@ -1,5 +1,6 @@
-const proyect = require('./project');
+const experience = require('./experience');
 const health = require('./health');
+const proyect = require('./project');
 
 // TODO: API should have auth middleware
 
@@ -12,6 +13,7 @@ const health = require('./health');
 const APIRoutes = (req, res, next) => {
   const app = req.app;
   app.use('/project', proyect);
+  app.use('/experience', experience);
   app.use('/health', health);
   next();
 };

@@ -1,4 +1,4 @@
-const {DBInterface} = require('../../interfaces/DBInterface');
+const {IModel} = require('../../interfaces/IModel');
 const {Project} = require('../../entities/Project');
 const {NotFound, InternalServerError} = require('http-errors');
 
@@ -7,7 +7,7 @@ const MAX_ELEMENTS = 10;
 /**
  * @class ProjectModel
  */
-class ProjectModel extends DBInterface {
+class ProjectModel extends IModel {
   /**
    * @constructor
    * @param {*} mongoose connection to DB
